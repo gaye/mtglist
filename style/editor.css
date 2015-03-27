@@ -1,0 +1,42 @@
+.editor .cardpool {
+  height: 315px;
+  overflow-y: scroll;
+  padding: 15px;
+  width: calc(100% - 300px);
+}
+
+.editor .cardpool .card {
+  background-size: 100% 100%;
+  float: left;
+  height: 293px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  position: relative;
+  width: 213px;
+}
+
+.editor .cardpool .card .card-controls {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}
+
+.editor .metadata {
+  background-color: rgba(0, 0, 0, 0.8);
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 300px;
+}
+
+.editor .metadata form {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  width: 285px;
+}
+
+.editor .metadata label {
+  color: white;
+}
