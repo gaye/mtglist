@@ -5,6 +5,7 @@
   out: "build/main.js",
 
   include: [
+    'dec',
     'lodash',
     'mtgdb',
     'react',

@@ -1,6 +1,7 @@
 JS_FILES=$(shell find js/)
 
 build: build.js node_modules $(JS_FILES)
+	rm -rf build
 	mkdir build
 	./node_modules/.bin/babel js \
 		--experimental \
@@ -9,18 +10,11 @@ build: build.js node_modules $(JS_FILES)
 	./node_modules/.bin/r.js -o build.js
 
 node_modules: package.json
-	npm install --loglevel info
+	npm install
 
 .PHONY: clean
-clean: remove_build remove_node_modules
-
-.PHONY: remove_build
-remove_build:
-	rm -rf build
-
-.PHONY: remove_node_modules
-remove_node_modules:
-	rm -rf node_modules
+clean:
+	rm -rf build node_modules
 
 .PHONY: serve
 serve: build
