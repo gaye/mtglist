@@ -22,5 +22,4 @@ export default async function main() {
   };
 
   await router.start();
-  console.log('Router started!');
 }
