@@ -1,14 +1,13 @@
 JS_FILES=$(shell find js/)
 
-all: build node_modules
-
-build: node_modules $(JS_FILES)
-	rm -rf build
+build: build.js node_modules $(JS_FILES)
+	rm -rf build tmp
 	mkdir build
 	./node_modules/.bin/babel js \
 		--experimental \
-		--out-dir build \
-		--source-maps
+		--modules amd \
+		--out-dir build
+	./node_modules/.bin/r.js -o build.js
 
 node_modules: package.json
 	npm install --loglevel info

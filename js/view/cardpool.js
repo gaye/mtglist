@@ -1,19 +1,16 @@
-define((require, exports, module) => {
-'use strict';
+import * as _ from 'lodash';
+import React from 'react';
+import Card from './card';
+import * as mtgdb from '../mtgdb';
 
-let _ = require('lodash');
-let Card = require('./card');
-let React = require('react');
-let mtgdb = require('../mtgdb');
-
-module.exports = React.createClass({
+export default React.createClass({
   getInitialState: function() {
     return { cards: [] };
   },
 
   componentWillReceiveProps: function(props) {
     let search = props.search;
-    if (!search || search.length < 3) {
+    if (!search || search === this.props.search || search.length < 3) {
       return;
     }
 
@@ -21,16 +18,22 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    let cards = this.state.cards;
     return (
       <div className="cardpool">
-        {this.state.cards.map(card => <Card info={card} />)}
+        {cards.map(card => {
+          return (
+            <Card info={card}
+                  increment={this.props.increment.bind(null, card)}
+                  decrement={this.props.decrement.bind(null, card)} />
+          );
+        })}
       </div>
     );
   },
 
-  _search: _.debounce(function(name) {
-    return mtgdb.search(name).then(res => this.setState({ cards: res }));
+  _search: _.debounce(async function(name) {
+    let res = await mtgdb.search(name);
+    this.setState({ cards: res });
   }, 500)
-});
-
 });

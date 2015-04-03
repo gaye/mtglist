@@ -15,6 +15,8 @@
 
   "devDependencies": {
     "babel": "4.7.16",
+    "chai": "2.2.0",
+    "mocha": "2.2.1",
     "watchman": "0.1.8"
   }
 }

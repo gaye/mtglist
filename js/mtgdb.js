@@ -1,29 +1,30 @@
-define((require, exports) => {
-'use strict';
-
-let _ = require('lodash');
-let Xhr = require('./xhr');
+import * as _ from 'lodash';
+import Xhr from './xhr';
 
 const BASE_URL = 'http://api.mtgdb.info';
 
-exports.imageUrl = id => {
-  return BASE_URL + '/content/card_images/' + id + '.jpeg';
-};
+export async function getCard(id) {
+  let url = BASE_URL + '/cards/' + id;
+  let xhr = new Xhr();
+  xhr.open('GET', url, true /* async */);
+  let json = await xhr.send();
+  return JSON.parse(json);
+}
 
-exports.search = text => {
-  console.log('Will search for card', text);
+export function imageUrl(id) {
+  return BASE_URL + '/content/card_images/' + id + '.jpeg';
+}
+
+export async function search(text) {
   let url = BASE_URL + '/search/' + text;
   let xhr = new Xhr();
   xhr.open('GET', url, true /* async */);
-  return xhr.send().then(json => {
-    let res = JSON.parse(json);
-    let nameToCards = _.groupBy(res, 'name');
-    _.forEach(nameToCards, (cards, name) => {
-      nameToCards[name] = _.sortBy(cards, 'id')[0];
-    });
-
-    return _.values(nameToCards);
+  let json = await xhr.send();
+  let res = JSON.parse(json);
+  let nameToCards = _.groupBy(res, 'name');
+  _.forEach(nameToCards, (cards, name) => {
+    nameToCards[name] = _.sortBy(cards, 'id')[0];
   });
-};
 
-});
+  return _.values(nameToCards);
+}

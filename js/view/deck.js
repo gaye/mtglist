@@ -1,17 +1,22 @@
-define((require, exports, module) => {
-'use strict';
+import * as _ from 'lodash';
+import React from 'react';
+import Card from './card';
 
-let Card = require('./card');
-let React = require('react');
-
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (
-      <div className="cardpool">
-        {this.state.cards.map(card => <Card info={card} />)}
+      <div className="deck">
+        {_.map(this.props.main, (item, id) => {
+          let card = item.card;
+          let count = item.count;
+          return (
+            <Card info={card}
+                  count={count}
+                  increment={this.props.increment.bind(null, card)}
+                  decrement={this.props.decrement.bind(null, card)} />
+          );
+        })}
       </div>
     );
   }
-});
-
 });

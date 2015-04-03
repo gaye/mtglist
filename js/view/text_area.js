@@ -1,9 +1,6 @@
-define((require, exports, module) => {
-'use strict';
+import React from 'react';
 
-let React = require('react');
-
-module.exports = React.createClass({
+export default React.createClass({
   render: function() {
     return (
       <div className="form-group">
@@ -17,6 +14,4 @@ module.exports = React.createClass({
       </div>
     );
   }
-});
-
 });

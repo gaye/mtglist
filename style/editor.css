@@ -5,7 +5,15 @@
   width: calc(100% - 300px);
 }
 
-.editor .cardpool .card {
+.editor .deck {
+  min-height: 600px;
+  height: calc(100% - 315px);
+  overflow-y: scroll;
+  padding: 15px;
+  width: calc(100% - 300px);
+}
+
+.editor .card {
   background-size: 100% 100%;
   float: left;
   height: 293px;
@@ -15,15 +23,28 @@
   width: 213px;
 }
 
-.editor .cardpool .card .card-controls {
+.editor .card .card-controls {
   bottom: 0;
   left: 0;
   position: absolute;
 }
 
+.editor .card .card-count {
+  color: yellow;
+  font-size: 48px;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  text-align: center;
+  top: 33%;
+  width: 100%;
+}
+
 .editor .metadata {
   background-color: rgba(0, 0, 0, 0.8);
   bottom: 0;
+  height: 100%;
   position: absolute;
   right: 0;
   top: 0;

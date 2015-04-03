@@ -1,70 +1,105 @@
-define((require, exports, module) => {
-'use strict';
+import React from 'react';
+import Cardpool from './cardpool';
+import Deck from './deck';
+import InputText from './input_text';
+import TextArea from './text_area';
 
-let Cardpool = require('./cardpool');
-let InputText = require('./input_text');
-let TextArea = require('./text_area');
-let React = require('react');
-
-module.exports = React.createClass({
+export default React.createClass({
   getInitialState: function() {
     return {
       deck: {
-        name: 'Untitled',
-        format: 'Standard',
-        notes: '',
-        main: '',
+        metadata: { name: 'Untitled', format: 'Standard', notes: '' },
+        main: {},
         side: {}
       },
 
-      search: {
-        card: ''
-      }
+      search: { card: '' }
     };
   },
 
   render: function() {
+    let deck = this.state.deck;
+    let search = this.state.search;
     return (
       <div className="editor">
-        <Cardpool search={this.state.search.card} />
-        <div className="metadata">
-          <form>
-            <InputText inputId="nameInput"
-                       inputLabel="Name"
-                       value={this.state.deck.name}
-                       handleChange={this.onNameChange} />
-            <InputText inputId="formatInput"
-                       inputLabel="Format"
-                       value={this.state.deck.format}
-                       handleChange={this.onFormatChange} />
-            <TextArea textAreaId="notesInput"
-                      textAreaLabel="Notes"
-                      value={this.state.deck.notes}
-                      handleChange={this.onNotesChange} />
-            <InputText inputId="cardInput"
-                       inputLabel="Card Name"
-                       handleChange={this.onCardChange} />
-          </form>
+        <Cardpool search={search.card}
+                  increment={this._increment}
+                  decrement={this._decrement} />
+        <Deck main={deck.main}
+              side={deck.side}
+              increment={this._increment}
+              decrement={this._decrement} />
+        <div className="sidebar">
+          <div className="metadata">
+            <form>
+              <InputText inputId="nameInput"
+                         inputLabel="Name"
+                         value={deck.name}
+                         handleChange={this._onNameChange} />
+              <InputText inputId="formatInput"
+                         inputLabel="Format"
+                         value={deck.format}
+                         handleChange={this._onFormatChange} />
+              <TextArea textAreaId="notesInput"
+                        textAreaLabel="Notes"
+                        value={deck.notes}
+                        handleChange={this._onNotesChange} />
+              <InputText inputId="cardInput"
+                         inputLabel="Card Name"
+                         handleChange={this._onCardChange} />
+            </form>
+          </div>
         </div>
       </div>
     );
   },
 
-  onNameChange: function(event) {
-    this.setState({ deck: { name: event.target.value } });
+  _onNameChange: function(event) {
+    let deck = this.state.deck;
+    deck.name = event.target.value;
+    this.setState({ deck: deck });
   },
 
-  onFormatChange: function(event) {
-    this.setState({ deck: { format: event.target.value } });
+  _onFormatChange: function(event) {
+    let deck = this.state.deck;
+    deck.format = event.target.value;
+    this.setState({ deck: deck });
   },
 
-  onNotesChange: function(event) {
-    this.setState({ deck: { notes: event.target.value } });
+  _onNotesChange: function(event) {
+    let deck = this.state.deck;
+    deck.notes = event.target.value;
+    this.setState({ deck: deck });
   },
 
-  onCardChange: function(event) {
-    this.setState({ search: { card: event.target.value } });
+  _onCardChange: function(event) {
+    let search = this.state.search;
+    search.card = event.target.value;
+    this.setState({ search: search });
+  },
+
+  _increment: function(card) {
+    let id = card.id;
+    let main = this.state.deck.main;
+    if (id in main) {
+      main[id].count += 1;
+    } else {
+      main[id] = { card: card, count: 1 };
+    }
+
+    this.setState({ deck: { main: main } });
+  },
+
+  _decrement: function(card) {
+    let id = card.id;
+    let main = this.state.deck.main;
+    if (id in main) {
+      main[id].count -= 1;
+      if (main[id].count <= 0) {
+        delete main[id];
+      }
+
+      this.setState({ deck: { main: main } });
+    }
   }
-});
-
 });
