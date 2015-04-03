@@ -1,7 +1,6 @@
 JS_FILES=$(shell find js/)
 
 build: build.js node_modules $(JS_FILES)
-	rm -rf build tmp
 	mkdir build
 	./node_modules/.bin/babel js \
 		--experimental \
