@@ -23,7 +23,7 @@ remove_node_modules:
 	rm -rf node_modules
 
 .PHONY: serve
-serve: all
+serve: build
 	python -m SimpleHTTPServer 8080
 
 .PHONY: watch
