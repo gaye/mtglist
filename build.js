@@ -1,8 +1,8 @@
 {
   baseUrl: 'build/',
-  name: "main",
+  name: 'main',
   normalizeDirDefines: 'all',
-  out: "build/main.js",
+  out: 'build/main.js',
 
   include: [
     'lodash',
