@@ -1,8 +1,11 @@
+import * as _ from 'lodash';
 import React from 'react';
 import Cardpool from './cardpool';
 import Deck from './deck';
 import InputText from './input_text';
+import LabelCount from './label_count';
 import TextArea from './text_area';
+import * as dec from 'dec';
 
 export default React.createClass({
   getInitialState: function() {
@@ -19,6 +22,7 @@ export default React.createClass({
 
   render: function() {
     let deck = this.state.deck;
+    let metadata = deck.metadata;
     let search = this.state.search;
     return (
       <div className="editor">
@@ -29,25 +33,38 @@ export default React.createClass({
               side={deck.side}
               increment={this._increment}
               decrement={this._decrement} />
-        <div className="sidebar">
-          <div className="metadata">
-            <form>
-              <InputText inputId="nameInput"
-                         inputLabel="Name"
-                         value={deck.name}
-                         handleChange={this._onNameChange} />
-              <InputText inputId="formatInput"
-                         inputLabel="Format"
-                         value={deck.format}
-                         handleChange={this._onFormatChange} />
-              <TextArea textAreaId="notesInput"
-                        textAreaLabel="Notes"
-                        value={deck.notes}
-                        handleChange={this._onNotesChange} />
-              <InputText inputId="cardInput"
-                         inputLabel="Card Name"
-                         handleChange={this._onCardChange} />
-            </form>
+        <div className="metadata">
+          <form>
+            <InputText inputId="nameInput"
+                       inputLabel="Name"
+                       value={metadata.name}
+                       handleChange={this._onNameChange} />
+            <InputText inputId="formatInput"
+                       inputLabel="Format"
+                       value={metadata.format}
+                       handleChange={this._onFormatChange} />
+            <TextArea textAreaId="notesInput"
+                      textAreaLabel="Notes"
+                      value={metadata.notes}
+                      handleChange={this._onNotesChange} />
+            <InputText inputId="cardInput"
+                       inputLabel="Card Name"
+                       handleChange={this._onCardChange} />
+          </form>
+
+          <div className="card-count-container">
+            <LabelCount name="main"
+                        count={this._mainCount()}
+                        success={this._mainCount() >= 60} />
+            <LabelCount name="side"
+                        count={this._sideCount()}
+                        success={this._sideCount() <= 15} />
+          </div>
+
+          <div className="actions-container">
+            <a href={this._downloadUrl()} download={metadata.name + '.dec'}>
+              <span className="glyphicon glyphicon-cloud-download" />
+            </a>
           </div>
         </div>
       </div>
@@ -56,19 +73,19 @@ export default React.createClass({
 
   _onNameChange: function(event) {
     let deck = this.state.deck;
-    deck.name = event.target.value;
+    deck.metadata.name = event.target.value;
     this.setState({ deck: deck });
   },
 
   _onFormatChange: function(event) {
     let deck = this.state.deck;
-    deck.format = event.target.value;
+    deck.metadata.format = event.target.value;
     this.setState({ deck: deck });
   },
 
   _onNotesChange: function(event) {
     let deck = this.state.deck;
-    deck.notes = event.target.value;
+    deck.metadata.notes = event.target.value;
     this.setState({ deck: deck });
   },
 
@@ -80,26 +97,50 @@ export default React.createClass({
 
   _increment: function(card) {
     let id = card.id;
-    let main = this.state.deck.main;
-    if (id in main) {
-      main[id].count += 1;
+    let deck = this.state.deck;
+    if (id in deck.main) {
+      deck.main[id].count += 1;
     } else {
-      main[id] = { card: card, count: 1 };
+      deck.main[id] = { card: card, count: 1 };
     }
 
-    this.setState({ deck: { main: main } });
+    this.setState({ deck: deck });
   },
 
   _decrement: function(card) {
     let id = card.id;
-    let main = this.state.deck.main;
-    if (id in main) {
-      main[id].count -= 1;
-      if (main[id].count <= 0) {
-        delete main[id];
+    let deck = this.state.deck;
+    if (id in deck.main) {
+      deck.main[id].count -= 1;
+      if (deck.main[id].count <= 0) {
+        delete deck.main[id];
       }
 
-      this.setState({ deck: { main: main } });
+      this.setState({ deck: deck });
     }
+  },
+
+  _mainCount: function() {
+    return cardCount(this.state.deck.main);
+  },
+
+  _sideCount: function() {
+    return cardCount(this.state.deck.side);
+  },
+
+  _downloadUrl: function() {
+    let deck = this.state.deck;
+    let contents = dec.encode(deck);
+    let blob = new Blob([contents], { type: 'text/plain' });
+    return URL.createObjectURL(blob);
   }
 });
+
+function cardCount(collection) {
+  if (_.isEmpty(collection)) {
+    return 0;
+  }
+
+  return _.map(collection, value => value.count)
+          .reduce((a, b) => a + b);
+}
