@@ -21,13 +21,13 @@ export function encode(deck) {
   _.forEach(main, item => {
     let card = item.card;
     let count = item.count;
-    result += (count + ' ' + card.name + '\n');
+    result += `${count} ${card.name}\n`;
   });
 
   _.forEach(side, item => {
     let card = item.card;
     let count = item.count;
-    result += ('SB: ' + count + ' ' + card.name + '\n');
+    result += `SB: ${count} ${card.name}\n`;
   });
 
   result += '\n';

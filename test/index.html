@@ -10,14 +10,14 @@
     <div id="mocha"></div>
     <script src="mocha.js"></script>
     <script>mocha.setup('tdd')</script>
-    <script src="/node_modules/requirejs/require.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
     <script>
       require.config({
-        baseUrl: '/build',
+        baseUrl: '../build',
         paths: {
-          babel: '/node_modules/babel',
-          chai: '/node_modules/chai/chai',
-          lodash: '/node_modules/lodash/index'
+          babel: '../node_modules/babel',
+          chai: '../node_modules/chai/chai',
+          lodash: '../node_modules/lodash/index'
         }
       });
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { imageUrl } from '../mtgdb';
+import { imageUrl } from 'mtgdb';
 
 export default React.createClass({
   render: function() {
-    let style = { backgroundImage: 'url(' + imageUrl(this.props.info.id) + ')' };
+    let style = { backgroundImage: `url(${imageUrl(this.props.info.id)})` };
     return (
       <div className="card"
            style={style}

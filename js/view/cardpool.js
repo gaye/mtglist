@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import React from 'react';
 import Card from './card';
-import * as mtgdb from '../mtgdb';
+import React from 'react';
+import * as mtgdb from 'mtgdb';
 
 export default React.createClass({
   getInitialState: function() {

@@ -59,14 +59,14 @@ export default class Xhr {
         }
 
         if (transport.status < 200 || transport.status >= 400) {
-          return reject(new Error('Bad status: ' + transport.status));
+          return reject(new Error(`Bad status: ${transport.status}`));
         }
 
         return resolve(transport.responseText);
       };
 
       transport.ontimeout = function() {
-        reject(new Error('Request timed out after ' + transport.timeout + 'ms'));
+        reject(new Error(`Request timed out after ${transport.timeout} ms`));
       };
     });
   }

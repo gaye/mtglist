@@ -1,5 +1,5 @@
 {
-  baseUrl: 'build/',
+  baseUrl: './build',
   name: 'main',
   normalizeDirDefines: 'all',
   out: 'build/main.js',

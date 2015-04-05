@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import React from 'react';
 import Card from './card';
+import React from 'react';
 
 export default React.createClass({
   render: function() {

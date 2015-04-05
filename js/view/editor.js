@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import React from 'react';
 import Cardpool from './cardpool';
 import Deck from './deck';
 import InputText from './input_text';
 import LabelCount from './label_count';
+import React from 'react';
 import TextArea from './text_area';
 import * as dec from 'dec';
 
